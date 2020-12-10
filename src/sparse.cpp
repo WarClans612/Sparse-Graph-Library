@@ -290,7 +290,6 @@ SparseMatrix<fT> SparseMatrix<fT>::operator* (const SparseMatrix<fT>& other) con
         for(size_t k=0; k<ret.m_ncol; ++k)
             for(size_t j=0; j<m_ncol; ++j)
                 ret(i, k, ret(i, k) + ((*this)(i,j) * other(j,k)));
-
     return ret;
 }
 template<typename fT>
