@@ -175,6 +175,11 @@ bool SparseMatrix<fT>::operator== (SparseMatrix<fT> const & other)
     if (m_data != other.m_data) return false;
     return true;
 }
+template<typename fT>
+bool SparseMatrix<fT>::operator!= (SparseMatrix<fT> const & other)
+{
+    return !(*this == other);
+}
 
 /*
  * Assignment Operator

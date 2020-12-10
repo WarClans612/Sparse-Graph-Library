@@ -20,6 +20,7 @@ PYBIND11_MODULE(_sparse, m) {
         .def_property("nrow", &Matrix::nrow, nullptr)
         .def_property("ncol", &Matrix::ncol, nullptr)
         .def("__eq__", &Matrix::operator==)
+        .def("__ne__", &Matrix::operator!=)
         .def("assign", &Matrix::operator=)
         .def(py::self += py::self)
         .def(py::self + py::self)

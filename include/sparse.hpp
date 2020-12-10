@@ -33,6 +33,7 @@ public:
     friend void same_size(const SparseMatrix<tfT> &mat1, const SparseMatrix<tfT> &mat2);
 
     bool operator== (SparseMatrix<fT> const &);
+    bool operator!= (SparseMatrix<fT> const &);
 
     SparseMatrix &  operator= (const SparseMatrix<fT>& other);
     SparseMatrix &  operator+=(const SparseMatrix<fT>& other);
