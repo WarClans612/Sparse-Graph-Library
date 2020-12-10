@@ -14,7 +14,7 @@ class SparseMatrix {
 
 public:
 
-    SparseMatrix(size_t nrow=1, size_t ncol=1);
+    SparseMatrix(size_t nrow=1, size_t ncol=1, bool identity=false);
     SparseMatrix(SparseMatrix<fT> const & other);
     SparseMatrix(SparseMatrix<fT> && other);
     SparseMatrix(std::vector<std::vector<fT>> const & other, size_t nrow, size_t ncol);
@@ -26,20 +26,24 @@ public:
 
     fT   operator() (size_t nrow, size_t ncol) const;
     void operator() (size_t nrow, size_t ncol, fT value);
-    fT   operator() (size_t idx) const;
-    void operator() (size_t idx);
 
     template<typename tfT>
     friend void validate_multiplication(const SparseMatrix<tfT> &mat1, const SparseMatrix<tfT> &mat2);
+    template<typename tfT>
+    friend void same_size(const SparseMatrix<tfT> &mat1, const SparseMatrix<tfT> &mat2);
 
     bool operator== (SparseMatrix<fT> const &);
 
     SparseMatrix &  operator= (const SparseMatrix<fT>& other);
+    SparseMatrix &  operator+=(const SparseMatrix<fT>& other);
     SparseMatrix    operator+ (const SparseMatrix<fT>& other) const;
+    SparseMatrix &  operator-=(const SparseMatrix<fT>& other);
     SparseMatrix    operator- (const SparseMatrix<fT>& other) const;
+    SparseMatrix &  operator*=(fT alpha);
     SparseMatrix    operator* (fT alpha) const;
-    std::vector<fT> operator* (const std::vector<fT> other) const;
     SparseMatrix    operator* (const SparseMatrix<fT>& other) const;
+    std::vector<fT> operator* (const std::vector<fT> other) const;
+    SparseMatrix &  operator/=(fT alpha);
     SparseMatrix    operator/ (fT alpha) const;
 
     size_t findIndex(size_t nrow, size_t ncol) const;
@@ -60,5 +64,7 @@ private:
 
 template<typename fT>
 void validate_multiplication(const SparseMatrix<fT> &mat1, const SparseMatrix<fT> &mat2);
+template<typename fT>
+void same_size(const SparseMatrix<fT> &mat1, const SparseMatrix<fT> &mat2);
 
 #endif
