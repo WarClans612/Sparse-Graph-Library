@@ -22,7 +22,7 @@ public:
     
     void load(std::string filename);
     void save(std::string filename);
-    void reset();
+    void reset(bool identity=false);
 
     fT   operator() (size_t nrow, size_t ncol) const;
     void operator() (size_t nrow, size_t ncol, fT value);

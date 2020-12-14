@@ -16,23 +16,7 @@ template<typename fT>
 SparseMatrix<fT>::SparseMatrix(size_t nrow, size_t ncol, bool identity)
     : m_nrow(nrow), m_ncol(ncol)
 {
-    m_index.reserve(nrow+1);
-    m_indices.reserve(nrow);
-    m_data.reserve(nrow);
-
-    if(identity)
-    {
-        for(size_t i=0; i<nrow; ++i)
-        {
-            m_index.push_back(i);
-            m_indices.push_back(i);
-            m_data.push_back(static_cast<fT>(1.));
-        }
-        m_index.push_back(nrow);
-    }
-    else
-        for(size_t i=0; i<=nrow; ++i)
-            m_index.push_back(static_cast<size_t>(0));
+    reset(identity);
 }
 
 /**
@@ -73,9 +57,48 @@ SparseMatrix<fT>::SparseMatrix(SparseMatrix<fT> && other)
 **/
 template<typename fT>
 SparseMatrix<fT>::SparseMatrix(std::vector<std::vector<fT>> const & other, size_t nrow, size_t ncol)
-    
+    : m_nrow(nrow), m_ncol(ncol)
 {
+    // Create the matrix with zero value at all location
+    reset(false);
 
+    for(size_t i=0; i<m_nrow; ++i)
+    {
+        for(size_t j=0; j<m_ncol; ++j)
+        {
+            // Set the value using the () operator
+            (*this)(i, j, other[i][j]);
+        }
+    }
+}
+
+/*
+ * Reset the content of matrix to initial state
+*/
+template<typename fT>
+void SparseMatrix<fT>::reset(bool identity)
+{
+    m_index.clear();
+    m_indices.clear();
+    m_data.clear();
+
+    m_index.reserve(m_nrow+1);
+    m_indices.reserve(m_nrow);
+    m_data.reserve(m_nrow);
+
+    if(identity)
+    {
+        for(size_t i=0; i<m_nrow; ++i)
+        {
+            m_index.push_back(i);
+            m_indices.push_back(i);
+            m_data.push_back(static_cast<fT>(1.));
+        }
+        m_index.push_back(m_nrow);
+    }
+    else
+        for(size_t i=0; i<=m_nrow; ++i)
+            m_index.push_back(static_cast<size_t>(0));
 }
 
 /*
