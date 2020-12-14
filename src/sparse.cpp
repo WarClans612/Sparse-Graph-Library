@@ -12,7 +12,7 @@
 
 /**
  * Default Constructor
- * Setting the data into identity matrx with specified dimension
+ * Setting the data into identity matrix with specified dimension
 **/
 template<typename fT>
 SparseMatrix<fT>::SparseMatrix(size_t nrow, size_t ncol, bool identity)
