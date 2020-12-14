@@ -51,6 +51,11 @@ public:
     size_t nrow() const { return m_nrow; }
     size_t ncol() const { return m_ncol; }
 
+    void expand_row();
+    void expand_col();
+    void shrink_row();
+    void shrink_col();
+
 
 private:
     

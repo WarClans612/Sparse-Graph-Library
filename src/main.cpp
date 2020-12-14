@@ -42,5 +42,9 @@ PYBIND11_MODULE(_sparse, m) {
         })
         .def("__getitem__", [](Matrix &mat, std::pair<size_t, size_t> i) {
             return mat(i.first, i.second);
-        });
+        })
+        .def("expand_row", &Matrix::expand_row)
+        .def("expand_col", &Matrix::expand_col)
+        .def("shrink_row", &Matrix::shrink_row)
+        .def("shrink_col", &Matrix::shrink_col);
 }

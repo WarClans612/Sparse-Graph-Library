@@ -438,7 +438,10 @@ SparseMatrix<fT> SparseMatrix<fT>::operator/(fT alpha) const
     return ret;
 }
 
-
+/*
+ * Return index of data associated with specified row and column
+ * Return index for m_data
+*/
 template<typename fT>
 size_t SparseMatrix<fT>::findIndex(size_t nrow, size_t ncol) const
 {
@@ -449,6 +452,70 @@ size_t SparseMatrix<fT>::findIndex(size_t nrow, size_t ncol) const
                 ncol);
 
     return static_cast<size_t>(std::distance(m_indices.begin(), indices_it));
+}
+
+/*
+ * Expand the size of the row 
+*/
+template<typename fT>
+void SparseMatrix<fT>::expand_row()
+{
+    ++m_nrow;
+    m_index.push_back(m_index.back());
+}
+
+/*
+ * Expand the size of the col 
+*/
+template<typename fT>
+void SparseMatrix<fT>::expand_col()
+{
+    ++m_ncol;
+}
+
+/*
+ * Shrink the size of the row 
+*/
+template<typename fT>
+void SparseMatrix<fT>::shrink_row()
+{
+    --m_nrow;
+    size_t end = m_index.back();
+    m_index.pop_back();
+    size_t start = m_index.back();
+    m_indices.erase(m_indices.begin()+start, m_indices.begin()+end);
+    m_data.erase(m_data.begin()+start, m_data.begin()+end);
+}
+
+/*
+ * Shrink the size of the col 
+*/
+template<typename fT>
+void SparseMatrix<fT>::shrink_col()
+{
+    --m_ncol;
+    for(auto i = m_index.begin(); i != m_index.end()-1; ++i)
+    {
+        for(auto j = m_indices.begin()+(*i), k = m_data.begin()+(*i);
+            j != m_indices.begin()+*(i+1) && k != m_data.begin()+*(i+1);)
+        {
+            // If indices is out of column, then remove
+            // m_ncol has been decreased above
+            // Reassign iterator with next item after erase
+            if(*j == m_ncol) 
+            {
+                for(auto z=i+1; z!=m_index.end(); ++z) --(*z);
+                j = m_indices.erase(j);
+                k = m_data.erase(k);
+            }
+            // Else continue normally
+            else
+            {
+                ++j;
+                ++k;
+            }
+        }
+    }
 }
 
 template class SparseMatrix<double>;
