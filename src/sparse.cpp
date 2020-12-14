@@ -1,8 +1,10 @@
 // Developer: Wilbert (wilbert.phen@gmail.com)
 
+#include <fstream>
 #include <cmath>
 #include <vector>
 #include <string>
+#include <sstream>
 #include <iterator>
 #include <algorithm>
 
@@ -71,6 +73,83 @@ SparseMatrix<fT>::SparseMatrix(std::vector<std::vector<fT>> const & other, size_
         }
     }
 }
+
+/*
+ * Load sparse matrix from text file
+*/
+template<typename fT>
+void SparseMatrix<fT>::load(std::string filename)
+{
+    std::ifstream infile(filename);
+
+    std::string temp_line;
+    fT temp_value;
+
+    {
+        std::getline(infile, temp_line);
+        std::istringstream iss(temp_line);
+        while(iss >> temp_value) m_nrow = temp_value;
+    }
+
+    {
+        std::getline(infile, temp_line);
+        std::istringstream iss(temp_line);
+        while(iss >> temp_value) m_ncol = temp_value;
+    }
+
+    m_index.clear();
+    m_indices.clear();
+    m_data.clear();
+    m_index.reserve(m_nrow+1);
+    m_indices.reserve(m_nrow);
+    m_data.reserve(m_nrow);
+
+    {
+        std::getline(infile, temp_line);
+        std::istringstream iss(temp_line);
+        while(iss >> temp_value) m_index.push_back(temp_value);
+    }
+
+    {
+        std::getline(infile, temp_line);
+        std::istringstream iss(temp_line);
+        while(iss >> temp_value) m_indices.push_back(temp_value);
+    }
+
+    {
+        std::getline(infile, temp_line);
+        std::istringstream iss(temp_line);
+        while(iss >> temp_value) m_data.push_back(temp_value);
+    }
+}
+
+/*
+ * Save sparse matrix from text file
+*/
+template<typename fT>
+void SparseMatrix<fT>::save(std::string filename)
+{
+    std::ofstream outfile(filename);
+
+    outfile << m_nrow << std::endl;
+    outfile << m_ncol << std::endl;
+    for(auto i = m_index.begin(); i != m_index.end(); ++i)
+    {
+        outfile << *i << " ";
+    }
+    outfile << std::endl;
+    for(auto i = m_indices.begin(); i != m_indices.end(); ++i)
+    {
+        outfile << *i << " ";
+    }
+    outfile << std::endl;
+    for(auto i = m_data.begin(); i != m_data.end(); ++i)
+    {
+        outfile << *i << " ";
+    }
+    outfile << std::endl;
+}
+
 
 /*
  * Reset the content of matrix to initial state

@@ -19,6 +19,8 @@ PYBIND11_MODULE(_sparse, m) {
         )
         .def(py::init<Matrix&>())
         .def(py::init<std::vector<std::vector<double>>&, size_t, size_t>())
+        .def("load", &Matrix::load)
+        .def("save", &Matrix::save)
         .def("reset", &Matrix::reset)
         .def_property("nrow", &Matrix::nrow, nullptr)
         .def_property("ncol", &Matrix::ncol, nullptr)
