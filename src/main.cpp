@@ -17,6 +17,8 @@ PYBIND11_MODULE(_sparse, m) {
         .def(py::init<size_t, size_t, bool>(),
             py::arg("nrow")=1, py::arg("ncol")=1, py::arg("identity")=false
         )
+        .def(py::init<Matrix&>())
+        .def(py::init<std::vector<std::vector<double>>&, size_t, size_t>())
         .def_property("nrow", &Matrix::nrow, nullptr)
         .def_property("ncol", &Matrix::ncol, nullptr)
         .def("__eq__", &Matrix::operator==)
