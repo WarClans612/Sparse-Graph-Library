@@ -7,12 +7,6 @@ import pytest
 
 from _sparse import SparseMatrix
 
-def printm(m):
-    for i in range(m.nrow):
-        for j in range(m.ncol):
-            print(m[i, j], end='\t')
-        print('')
-
 def make_matrices(size, sparse=True):
     mat1 = SparseMatrix(size, size)
     mat2 = SparseMatrix(size, size)
